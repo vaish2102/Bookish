@@ -1,3 +1,4 @@
+using Bookish.Models;
 using Microsoft.EntityFrameworkCore;
 namespace Bookish.Database;
 public class BookishDBContext : DbContext {
