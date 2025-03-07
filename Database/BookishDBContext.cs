@@ -7,5 +7,4 @@ public class BookishDBContext : DbContext {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
             optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=bookish;User Id=bookish;Password=bookish;");
     }
-}
-    
+}    
