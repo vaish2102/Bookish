@@ -1,24 +1,30 @@
 using Bookish.Database;
+using Bookish.Models;
 using Bookish.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace Bookish.Controllers{
     public class BookController:Controller{
         private readonly BookishDBContext _context;        
-        public BookController(){}
+        public BookController(BookishDBContext context){
+            _context = context;
+        }
+       
+        public IActionResult AddBook()
+        {
+            return View();
+        }
+
+    [HttpPost]
+        public async Task<IActionResult> AddBook([Bind("Id,Title")] BookViewModel bookViewModel){
+            _context.Add(new Book(bookViewModel));
+             await _context.SaveChangesAsync();
+             return RedirectToAction(nameof(AddBook));
+        }
         public async Task<IActionResult> ViewBook(){
-           BookViewModel testBook1 = new BookViewModel {
-                Id = 1234,
-                Title = "Test Book 1"
-            };
-            BookViewModel testBook2 = new BookViewModel {
-                Id = 1235,
-                Title = "Hitchhiker's Guide To The Galaxy"
-            };
-            List<BookViewModel> testBookList = new List<BookViewModel>();
-            testBookList.Add(testBook1);
-            testBookList.Add(testBook2);
-            return View(testBookList);
+            var book = _context.Book.ToList();
+            List<BookViewModel> books =_context.Book.Select(book => new BookViewModel(book)).ToList();
+            return View(books);
         }
     }
 }

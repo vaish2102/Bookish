@@ -1,0 +1,27 @@
+@model Bookish.ViewModels.BookViewModel;
+
+@{
+    ViewData["Title"] = "AddBook";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="AddBook">Add a new Book</a>
+</p> 
+<div>
+    <form asp-action="AddBook">
+        <div class="form-group">
+            <label asp-for="Id"></label>
+            <input asp-for="Id" />
+            <label asp-for="Title"></label>
+            <input asp-for="Title" />
+
+        </div>
+        <div class="form-group">
+                <input type="submit" value="AddBook" class="btn btn-primary" />
+        </div>
+    </form>
+    
+</div>
+
