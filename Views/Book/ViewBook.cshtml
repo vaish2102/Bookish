@@ -15,6 +15,9 @@
              <th>
                 @Html.DisplayNameFor(model => model.AuthorName )
             </th>
+            <th>
+                Check Out
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +31,9 @@
             </td>
              <td>
                 @Html.DisplayFor(modelItem => item.AuthorName)
+            </td>
+             <td>
+                 <button asp-controller="Book" asp-action="AddBookCopy" type="submit" class="btn btn-primary" style="width:150px">Check Out</button> 
             </td>
         </tr>
        } 

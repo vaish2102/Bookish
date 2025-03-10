@@ -21,6 +21,10 @@ body {
   margin-bottom: 60px;
 }
 
-.addBookSubmit{
+.addSubmit{
   margin:30px;
+}
+
+a:active{
+  color:#1b6ec2;
 }
