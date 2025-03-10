@@ -8,18 +8,15 @@ namespace Bookish.Controllers{
         private readonly BookishDBContext _context;        
         public BookController(BookishDBContext context){
             _context = context;
+        }       
+        public IActionResult AddBook(){
+            return View("AddBook");
         }
-       
-        public IActionResult AddBook()
-        {
-            return View();
-        }
-
-    [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> AddBook([Bind("Id,Title")] BookViewModel bookViewModel){
             _context.Add(new Book(bookViewModel));
              await _context.SaveChangesAsync();
-             return RedirectToAction(nameof(AddBook));
+             return RedirectToAction("ViewBook");
         }
         public async Task<IActionResult> ViewBook(){
             var book = _context.Book.ToList();
