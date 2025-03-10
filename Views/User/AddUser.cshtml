@@ -1,0 +1,15 @@
+@model Bookish.ViewModels.UserViewModel;
+@{
+    ViewData["Title"] = "AddUser";
+}
+<div>
+    <form asp-action="AddUser">
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" size="50"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add User" class="btn btn-primary addUserSubmit" />
+        </div>
+    </form>    
+</div>
