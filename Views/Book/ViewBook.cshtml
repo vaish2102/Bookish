@@ -18,6 +18,9 @@
             <th>
                 Check Out
             </th>
+            <th>
+                Enter your name
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +36,10 @@
                 @Html.DisplayFor(modelItem => item.AuthorName)
             </td>
              <td>
-                 <button asp-controller="Book" asp-action="AddBookCopy" type="submit" class="btn btn-primary" style="width:150px">Check Out</button> 
+                 <button asp-controller="Book"  onclick=checkOut() asp-action="CheckOutBook" type="submit" class="btn btn-primary" style="width:150px">Check Out</button> 
+            </td>
+             <td>
+                 <input id="UserName" size="10"/>
             </td>
         </tr>
        } 

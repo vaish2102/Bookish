@@ -17,5 +17,8 @@ public class BookCopy{
     }
 
     public BookCopy(){}
+     /*public BookCopy(string bookTitle){
+            Book.Title = bookTitle;
+     }*/
 
 }

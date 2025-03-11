@@ -7,6 +7,7 @@ public class BookCopyViewModel{
     public DateTime? DateIn { get; set; }
     public DateTime? DateOut { get; set; }
     public DateTime? DateDue { get; set; }
+     public BookCopyViewModel() {}
     public BookCopyViewModel(BookCopy bookCopy) {
         Id = bookCopy.Id;
         UserName = bookCopy.User.Name;

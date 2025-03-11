@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using Bookish.Database;
 using Bookish.Models;
 using Bookish.ViewModels;
@@ -20,18 +21,36 @@ namespace Bookish.Controllers{
                 _context.Author.Add(author);
             }
             _context.Book.Add(new Book(bookViewModel,author));
-         /*   BookCopy? bookCopy =_context.BookCopy.Where(bookCopy => bookCopy.Book.Title == bookViewModel.Title).FirstOrDefault();
-            if(bookCopy == null){
-
-                bookCopy = new BookCopy(){};
-                _context.BookCopy.Add(bookCopy);
+           await _context.SaveChangesAsync();
+          BookCopy? bookCopy =_context.BookCopy.Where(bookCopy => bookCopy.Book.Title == bookViewModel.Title).FirstOrDefault();
+          if(bookCopy == null){
+                await AddBookCopy(bookViewModel);
+          }
+            else{
+                await UpdateBookCopy(bookViewModel, bookCopy);
             }
-            BookCopyViewModel bookCopyViewModel = new BookCopyViewModel({'Test',
-        BookTitle,DateIn,DateOut,DateDue})
-             _context.BookCopy.Add(new BookCopy(bookViewModel,book,user));*/
-             await _context.SaveChangesAsync();
-             return RedirectToAction("ViewBook");
+            return RedirectToAction("ViewBook");
         }
+
+        public async Task<IActionResult> AddBookCopy(BookViewModel bookViewModel){
+            BookCopy bookCopy;
+            Book? book = _context.Book.Where(book => book.Title == bookViewModel.Title).FirstOrDefault();
+            BookCopyViewModel bookCopyViewModel = new BookCopyViewModel();
+            bookCopyViewModel.BookTitle = bookViewModel.Title;              
+            bookCopy = new BookCopy(bookCopyViewModel,book,null);
+            _context.BookCopy.Add(bookCopy);
+            await _context.SaveChangesAsync();
+             return RedirectToAction("ViewBook");
+        }  
+
+         public async Task<IActionResult> UpdateBookCopy(BookViewModel bookViewModel, BookCopy bookCopy){
+            bookCopy.Book.Title = bookViewModel.Title;
+            _context.BookCopy.Update(bookCopy);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ViewBook");
+        } 
+
+        
 
         public async Task<IActionResult> ViewBook(){
            // var book = _context.Book.ToList();
@@ -41,21 +60,32 @@ namespace Bookish.Controllers{
             return View(books);
         }
 
-        public async Task<IActionResult> AddBookCopy([Bind("Id,UserName,BookTitle,DateIn,DateOut,DateDue")] BookCopyViewModel bookCopyViewModel){
-
-            User? user =_context.User.Where(user => user.Name == bookCopyViewModel.UserName).FirstOrDefault();
+     //   public async Task<IActionResult> CheckOutBook([Bind("Id,UserName,BookTitle,DateIn,DateOut,DateDue")] BookCopyViewModel bookCopyViewModel){
+        public async Task<IActionResult> CheckOutBook(BookViewModel bookViewModel){
+            Console.WriteLine("inside checkout");
+            string userName = "John Doe";
+            User? user =_context.User.Where(user => user.Name == userName).FirstOrDefault();
             if(user == null){
-                user = new User(){Name = bookCopyViewModel.UserName};
+                user = new User(){Name = userName};
                 _context.User.Add(user);
             }
-            Book? book =_context.Book.Where(book => book.Title == bookCopyViewModel.BookTitle).FirstOrDefault();
-            if(book == null){
-                book = new Book(){Title = bookCopyViewModel.BookTitle};
-                _context.Book.Add(book);
+            
+           BookCopy ?bookCopy =_context.BookCopy.Where(bookCopy => bookCopy.Book.Title == bookViewModel.Title).FirstOrDefault();
+           if(bookCopy == null){
+                Console.WriteLine("Would notbe null");
             }
-            _context.BookCopy.Add(new BookCopy(bookCopyViewModel,book,user));
+            bookCopy.Book.Title = bookViewModel.Title;
+            bookCopy.User.Name = user.Name;
+            bookCopy.DateOut = DateTime.Now;
+            bookCopy.DateDue = DateTime.Now.AddDays(14);
+            _context.BookCopy.Update(bookCopy);
              await _context.SaveChangesAsync();
-             return RedirectToAction("ViewBook");
+            return RedirectToAction("ViewBook");
         }
+
+        public void checkOut(){
+            Console.WriteLine("going to check out");
+        }    
+
     }
 }
